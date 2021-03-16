@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Requests</title>
+</head>
+<body>
+<h1>Order Requests</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Author</th>
+        <th>Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="request : ${requests}">
+        <td>
+            <a th:href="@{requests/{id}(id = ${request.getId()})}"
+               th:text="${request.getId()}"></a>
+        </td>
+        <td th:text="${request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></td>
+        <td th:text="${request.getTotalPrice()}"></td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+<!--<a th:href="@{/certificates/new}" th:text="#{view.certificates.create_certificate}"></a>-->
+<a th:href="@{/home}" th:text="Home"></a>
+</body>
+</html>

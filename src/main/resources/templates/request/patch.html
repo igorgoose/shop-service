@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Request</title>
+</head>
+<body>
+<h1>Create request</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Left in Stock</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td>
+            <a th:href="@{products/{id}(id = ${product.getId()})}"
+               th:text="${product.getName()}"></a>
+        </td>
+        <td th:text="${product.getPrice()}"></td>
+        <td th:text="${{product.getQuantity()}}"></td>
+        <td>
+            <form th:method="patch" th:action="@{/requests/{id}(id = ${requestId})}">
+                <label>
+                    <input type="text" pattern="^[0-9]+$" required placeholder="Product quantity" name="quantity">
+                </label>
+                <input type="hidden" name="product_id" th:value="${product.getId()}">
+                <input type="submit" value="Add">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+<!--<a th:href="@{/certificates/new}" th:text="#{view.certificates.create_certificate}"></a>-->
+<a th:href="@{/home}" th:text="Home"></a>
+</body>
+</html>

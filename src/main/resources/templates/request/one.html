@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Requests</title>
+</head>
+<body>
+<h1 th:text="${'Order Request ' + request.getId()}"></h1>
+<p>
+    <label th:text="${'Author: '}"></label>
+    <br/>
+    <label th:text="${'Total price: ' + request.getTotalPrice()}"></label>
+</p>
+<p>
+    Order positions:
+</p>
+<table>
+    <thead>
+    <tr>
+        <th>Product</th>
+        <th>Price apiece</th>
+        <th>Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="orderPosition : ${request.getOrderPositions()}">
+        <td th:text="${orderPosition.getProduct().getName()}">
+<!--            <a th:href="@{requests/{id}(id = ${request.getId()})}"-->
+<!--               th:text="${request.getId()}"></a>-->
+        </td>
+        <td th:text="${orderPosition.getProduct().getPrice()}"></td>
+        <td th:text="${orderPosition.getQuantity()}"></td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+<!--<a th:href="@{/certificates/new}" th:text="#{view.certificates.create_certificate}"></a>-->
+<a th:href="@{/home}" th:text="Home"></a>
+</body>
+</html>
