@@ -62,4 +62,9 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         productRepository.save(persistedProduct);
         orderRequestRepository.save(orderRequest);
     }
+
+    @Override
+    public OrderRequest update() {
+        return null;
+    }
 }

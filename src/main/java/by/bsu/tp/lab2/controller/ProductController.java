@@ -18,6 +18,6 @@ public class ProductController {
     @GetMapping
     public String getProducts(Model model) {
         model.addAttribute("products", productService.getAllProducts());
-        return "products";
+        return "products/products";
     }
 }

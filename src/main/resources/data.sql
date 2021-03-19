@@ -24,6 +24,8 @@ insert into users (id, first_name, last_name, role) VALUES (1, 'Default', 'User'
 create table order_requests(
     id int auto_increment primary key,
     author_id int default 1,
+    customer_name varchar(256),
+    customer_address varchar(256),
     accepted bool not null default false,
     total_price decimal(20, 2) not null,
     foreign key (author_id) references users(id)

@@ -19,6 +19,9 @@ public class OrderRequest {
     @JoinColumn(name = "author_id")
     private User author;
 
+    private String customerName;
+    private String customerAddress;
+
     @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL)
     private List<OrderPosition> orderPositions;
 

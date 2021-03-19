@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${'Request ' + request.getId()}"></title>
+    <title th:text="${'Edit Request ' + request.getId()}"></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
@@ -10,7 +10,8 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -23,7 +24,8 @@
                     <a class="nav-link" href="#">Link</a>
                 </li>
                 <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Requests
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -45,19 +47,23 @@
     </nav>
 </div>
 <h1 th:text="${'Order Request ' + request.getId()}"></h1>
-<h2>Common Data</h2>
-<p>
-    <label th:text="${'Author: '}"></label>
-    <br/>
-    <label th:text="${'Customer: ' + (request.getCustomerName() == null ? 'empty' : request.getCustomerName())}"></label>
-    <br/>
-    <label th:text="${'Customer''s address: ' + (request.getCustomerAddress() == null ? 'empty' : request.getCustomerAddress())}"></label>
-    <br/>
-    <label th:text="${'Total price: ' + request.getTotalPrice()}"></label>
-</p>
-<p>
-    Order positions:
-</p>
+<form th:method="PUT" th:action="@{/requests/{id}(id = ${request.getId})}" th:object="${request}">
+    <h2>Common Data</h2>
+    <p>
+        <label for="author" th:text="${'Author: '}"></label>
+        <input type="text" value=" " id="author" disabled/>
+        <br/>
+        <label for="customer" th:text="${'Customer: '}"></label>
+        <input id="customer" type="text" th:field="*{customerName}" pattern="^[ a-zA-z]*$"/>
+        <br/>
+        <label for="address" th:text="${'Customer''s address: '}"></label>
+        <input id="address" type="text" th:field="*{customerAddress}" pattern="^[ a-zA-z]*$"/>
+        <br/>
+        <label th:text="${'Total price: ' + request.getTotalPrice()}"></label>
+    </p>
+    <input type="submit" value="Save">
+</form>
+<h2>Order positions:</h2>
 <table>
     <thead>
     <tr>
@@ -78,7 +84,36 @@
     </tbody>
 </table>
 <hr/>
-<!--<a th:href="@{/certificates/new}" th:text="#{view.certificates.create_certificate}"></a>-->
-<a th:href="@{/home}" th:text="Home"></a>
+<p>
+    Add products:
+</p>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Left in Stock</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td>
+            <a th:href="@{products/{id}(id = ${product.getId()})}"
+               th:text="${product.getName()}"></a>
+        </td>
+        <td th:text="${product.getPrice()}"></td>
+        <td th:text="${{product.getQuantity()}}"></td>
+        <td>
+            <form th:method="patch" th:action="@{/requests/{id}(id = ${request.getId()})}">
+                <label>
+                    <input type="text" pattern="^[0-9]+$" required placeholder="Product quantity" name="quantity">
+                </label>
+                <input type="hidden" name="product_id" th:value="${product.getId()}">
+                <input type="submit" value="Add">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

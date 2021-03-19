@@ -30,8 +30,15 @@ public class OrderRequestController {
     @GetMapping("/new")
     public String newRequest(Model model) {
         model.addAttribute("products", productService.getAllProducts());
-        model.addAttribute("requestId", orderRequestService.create().getId());
-        return "request/patch";
+        model.addAttribute("request", orderRequestService.create());
+        return "request/edit";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable("id") long id, Model model) {
+        model.addAttribute("request", orderRequestService.getById(id));
+        model.addAttribute("products", productService.getAllProducts());
+        return "request/edit";
     }
 
     @GetMapping("/{id}/patch")
@@ -39,6 +46,13 @@ public class OrderRequestController {
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("requestId", requestId);
         return "request/patch";
+    }
+
+    @PutMapping("/{id}")
+    public String put(@PathVariable("id") long id, Model model) {
+        model.addAttribute("request", orderRequestService.getById(id));
+        model.addAttribute("products", productService.getAllProducts());
+        return "redirect:" + id;
     }
 
     @PatchMapping("/{id}")
@@ -49,7 +63,7 @@ public class OrderRequestController {
         orderRequestService.addProduct(requestId, productId, quantity);
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("requestId", requestId);
-        return "redirect:/requests/" + requestId + "/patch";
+        return "redirect:" + requestId + "/edit";
     }
 
 }
