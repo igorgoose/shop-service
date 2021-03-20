@@ -63,40 +63,44 @@
             <br/>
             <label th:text="${'Total price: ' + request.getTotalPrice()}"></label>
         </p>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Save">
+
+        <div>
+            <h2>Order positions:</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price apiece</th>
+                    <th>Quantity</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orderPosition : ${request.getOrderPositions()}">
+                    <td th:text="${orderPosition.getProduct().getName()}"></td>
+                    <td th:text="${orderPosition.getProduct().getPrice()}"></td>
+                    <td th:text="${orderPosition.getQuantity()}"></td>
+                    <td>
+                        <form th:method="patch"
+                              th:action="@{/requests/{id}/products/{product_id}/remove(id = ${request.getId()}, product_id=${orderPosition.getProduct().getId()})}">
+                            <label>
+                                <input type="text" pattern="^[1-9][0-9]*$" required th:default="1"
+                                       placeholder="Quantity to remove"
+                                       name="quantity">
+                            </label>
+                            <input class="btn btn-outline-danger my-2 my-sm-0" type="submit" value="-">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+            <a class="btn btn-outline-primary my-2 my-sm-0"
+               th:href="@{/requests/{id}/products(id = ${request.getId()})}">Add
+                products</a>
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Save">
+        </div>
     </form>
-    <div>
-        <h2>Order positions:</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price apiece</th>
-                <th>Quantity</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="orderPosition : ${request.getOrderPositions()}">
-                <td th:text="${orderPosition.getProduct().getName()}"></td>
-                <td th:text="${orderPosition.getProduct().getPrice()}"></td>
-                <td th:text="${orderPosition.getQuantity()}"></td>
-                <td>
-                    <form th:method="patch" th:action="@{/requests/{id}/products/{product_id}/remove(id = ${request.getId()}, product_id=${orderPosition.getProduct().getId()})}">
-                        <label>
-                            <input type="text" pattern="^[1-9][0-9]*$" required th:default="1" placeholder="Quantity to remove"
-                                   name="quantity">
-                        </label>
-                        <input class="btn btn-outline-danger my-2 my-sm-0" type="submit" value="-">
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <hr/>
-        <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/requests/{id}/products(id = ${request.getId()})}">Add
-            products</a>
-    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

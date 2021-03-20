@@ -29,10 +29,8 @@ public class OrderRequestController {
     }
 
     @GetMapping("/new")
-    public String newRequest(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
-        model.addAttribute("request", orderRequestService.create());
-        return "request/addProducts";
+    public String newRequest() {
+        return "redirect:/requests/" + orderRequestService.create().getId() + "/products";
     }
 
     @GetMapping("/{id}/edit")
