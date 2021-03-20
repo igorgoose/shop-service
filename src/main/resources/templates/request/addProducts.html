@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${'Edit Request ' + request.getId()}"></title>
+    <title>Choose Products</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/main.css}">
@@ -18,13 +18,13 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{/home}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{/products}">Products</a>
                 </li>
-                <li class="nav-item dropdown active">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Requests
@@ -37,7 +37,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/requests/{id}/edit(id = ${request.getId()})}">Proceed</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -48,54 +48,37 @@
     </nav>
 </div>
 <div class="container-fluid">
-    <h1 th:text="${'Order Request ' + request.getId()}"></h1>
-    <form th:method="PUT" th:action="@{/requests/{id}(id = ${request.getId})}" th:object="${request}">
-        <h2>Common Data</h2>
-        <p>
-            <label for="author" th:text="${'Author: '}"></label>
-            <input type="text" value=" " id="author" readonly/>
-            <br/>
-            <label for="customer" th:text="${'Customer: '}"></label>
-            <input id="customer" type="text" th:field="*{customerName}" pattern="^[ a-zA-z]*$" required/>
-            <br/>
-            <label for="address" th:text="${'Customer''s address: '}"></label>
-            <input id="address" type="text" th:field="*{customerAddress}" pattern="^[ a-zA-z]*$" required/>
-            <br/>
-            <label th:text="${'Total price: ' + request.getTotalPrice()}"></label>
-        </p>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Save">
-    </form>
-    <div>
-        <h2>Order positions:</h2>
+    <h2 th:text="${'Choose products for request ' + request.getId()}"></h2>
+    <div class="table-wrapper-scroll-y">
         <table class="table">
             <thead>
             <tr>
-                <th>Product</th>
-                <th>Price apiece</th>
-                <th>Quantity</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Left in Stock</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="orderPosition : ${request.getOrderPositions()}">
-                <td th:text="${orderPosition.getProduct().getName()}"></td>
-                <td th:text="${orderPosition.getProduct().getPrice()}"></td>
-                <td th:text="${orderPosition.getQuantity()}"></td>
+            <tr th:each="product : ${products}">
                 <td>
-                    <form th:method="patch" th:action="@{/requests/{id}/products/{product_id}/remove(id = ${request.getId()}, product_id=${orderPosition.getProduct().getId()})}">
+                    <a th:href="@{products/{id}(id = ${product.getId()})}"
+                       th:text="${product.getName()}"></a>
+                </td>
+                <td th:text="${product.getPrice()}"></td>
+                <td th:text="${{product.getQuantity()}}"></td>
+                <td>
+                    <form th:method="patch" th:action="@{/requests/{id}/products/{product_id}/add(id = ${request.getId()}, product_id=${product.getId()})}">
                         <label>
-                            <input type="text" pattern="^[1-9][0-9]*$" required th:default="1" placeholder="Quantity to remove"
+                            <input type="text" pattern="^[1-9][0-9]*$" required placeholder="Product quantity"
                                    name="quantity">
                         </label>
-                        <input class="btn btn-outline-danger my-2 my-sm-0" type="submit" value="-">
+                        <input type="submit" value="Add">
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
-        <hr/>
-        <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/requests/{id}/products(id = ${request.getId()})}">Add
-            products</a>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

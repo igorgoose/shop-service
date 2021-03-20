@@ -9,5 +9,6 @@ public interface OrderRequestService {
     OrderRequest getById(long id);
     OrderRequest create();
     void addProduct(long requestId, long productId, int quantity);
-    OrderRequest update();
+    void removeProduct(long requestId, long productId, int quantity);
+    OrderRequest update(long id, OrderRequest orderRequest);
 }

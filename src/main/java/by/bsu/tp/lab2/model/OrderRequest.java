@@ -14,6 +14,8 @@ public class OrderRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double totalPrice;
+    private boolean accepted;
+    private boolean sent;
 
     @ManyToOne
     @JoinColumn(name = "author_id")

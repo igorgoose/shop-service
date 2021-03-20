@@ -12,6 +12,7 @@ public class OrderPosition {
     @GeneratedValue
     private Long id;
     private int quantity;
+    private double pricePerProduct;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
