@@ -18,28 +18,37 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item ">
                     <a class="nav-link" th:href="@{/home}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/products}">Products</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Products
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/products}">All</a>
+                        <a th:if="${user.getRole().equals('ADMIN')}"
+                           class="dropdown-item" th:href="@{/products/new}">Create</a>
+                    </div>
                 </li>
                 <li th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}"
                     class="nav-item">
                     <a class="nav-link" th:href="@{/orders}">Orders</a>
                 </li>
-                <li th:if="${user.getRole().equals('ADMIN')}" class="nav-item dropdown active">
+                <li th:if="${user.getRole().equals('ADMIN')}" class="nav-item dropdown ">
                     <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Requests</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="@{/requests}">All</a>
                     </div>
                 </li>
-                <li th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}" class="nav-item active">
+                <li th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}"
+                    class="nav-item ">
                     <a class="btn btn-outline-primary my-2 my-sm-0"
                        th:href="@{/orders/{id}/edit(id = ${order.getId()})}">Edit</a>
                 </li>
-                <li th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}" class="nav-item active">
+                <li th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}"
+                    class="nav-item ">
                     <form th:method="post" th:action="@{/orders/{id}/bill(id = ${order.getId()})}">
                         <input type="hidden" name="redirect" th:value="${'/orders/' + order.getId()}">
                         <button type="submit" class="btn btn-outline-success ml-2 my-2 my-sm-0">Issue Bill And
@@ -47,7 +56,8 @@
                         </button>
                     </form>
                 </li>
-                <li th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}" class="nav-item active">
+                <li th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}"
+                    class="nav-item ">
                     <form th:method="patch" th:action="@{/orders/{id}/status(id = ${order.getId()})}">
                         <input type="hidden" name="redirect" th:value="${'/orders/' + order.getId()}">
                         <input type="hidden" name="status" value="declined">
@@ -65,20 +75,44 @@
 <div class="container-fluid">
     <h1 th:text="${'Order Request ' + order.getId()}"></h1>
     <h2>Common Data</h2>
-    <p>
-        <label th:text="${'Author: ' + order.getAuthor().getFirstName() + ' ' + order.getAuthor().getLastName()}"></label>
-        <br/>
-        <label th:text="${'Status: ' + order.getOrderStatus()}"></label>
-        <br/>
-        <label th:text="${'Customer: ' + (order.getCustomerName() == null ? 'empty' : order.getCustomerName())}"></label>
-        <br/>
-        <label th:text="${'Customer''s address: ' + (order.getCustomerAddress() == null ? 'empty' : order.getCustomerAddress())}"></label>
-        <br/>
-        <label th:text="${'Total price: ' + order.getTotalPrice()}"></label>
-        <br th:if="${order.getBill() != null}"/>
-        <a th:if="${order.getBill() != null}" class="btn btn-outline-primary my-2 my-sm-0"
-           th:href="@{|/orders/${order.getId()}/bill|}">Download bill</a>
-    </p>
+    <div class="form-group row">
+        <label for="author" class="col-sm-2 col-form-label" th:text="${'Author: '}"></label>
+        <div class="col-sm-10">
+            <input id="author" readonly class="form-control-plaintext" type="text"
+                   th:value="${order.getAuthor().getFirstName() + ' ' + order.getAuthor().getLastName()}"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="status" class="col-sm-2 col-form-label" th:text="${'Status: '}"></label>
+        <div class="col-sm-10">
+            <input id="status" readonly class="form-control-plaintext" type="text"
+                   th:value="${order.getOrderStatus()}"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="customer" class="col-sm-2 col-form-label" th:text="${'Customer: '}"></label>
+        <div class="col-sm-10">
+            <input id="customer" readonly class="form-control-plaintext" type="text"
+                   th:value="${order.getCustomerName()}"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="address" class="col-sm-2 col-form-label" th:text="${'Customer''s address: '}"></label>
+        <div class="col-sm-10">
+            <input id="address" readonly class="form-control-plaintext" type="text"
+                   th:value="${order.getCustomerAddress()}"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="price" class="col-sm-2 col-form-label" th:text="${'Total price: '}"></label>
+        <div class="col-sm-10">
+            <input id="price" readonly class="form-control-plaintext" type="text"
+                   th:value="${order.getTotalPrice()}"/>
+        </div>
+    </div>
+    <br th:if="${order.getBill() != null}"/>
+    <a th:if="${order.getBill() != null}" class="btn btn-outline-primary my-2 my-sm-0"
+       th:href="@{|/orders/${order.getId()}/bill|}">Download bill</a>
     <div>
         <h2>Order positions:</h2>
         <label th:if="${order.getOrderPositions().isEmpty()}">There are no order positions at the moment</label>

@@ -21,8 +21,15 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/home}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/products}">Products</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Products
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/products}">All</a>
+                        <a th:if="${user.getRole().equals('ADMIN')}"
+                           class="dropdown-item" th:href="@{/products/new}">Create</a>
+                    </div>
                 </li>
                 <li th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}"
                     class="nav-item">
@@ -52,20 +59,42 @@
     <h1 th:text="${'Order Request ' + request.getId()}"></h1>
     <form th:method="PUT" th:action="@{/requests/{id}(id = ${request.getId})}" th:object="${request}">
         <h2>Common Data</h2>
-        <p>
-            <label th:text="${'Author: ' + request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></label>
-            <br/>
-            <label th:text="${'Status: ' + request.getOrderStatus()}"></label>
-            <br/>
-            <label for="customer" th:text="${'Customer: '}"></label>
-            <input id="customer" type="text" th:field="*{customerName}" pattern="^[ a-zA-z]*$" required/>
-            <br/>
-            <label for="address" th:text="${'Customer''s address: '}"></label>
-            <input id="address" type="text" th:field="*{customerAddress}" pattern="^[ a-zA-z]*$" required/>
-            <br/>
-            <label th:text="${'Total price: ' + request.getTotalPrice()}"></label>
-        </p>
-
+        <div class="form-group row">
+            <label for="author" class="col-sm-2 col-form-label" th:text="${'Author: '}"></label>
+            <div class="col-sm-10">
+            <input id="author" readonly class="form-control-plaintext" type="text"
+                   th:value="${request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"
+                   pattern="^[ a-zA-z]*$" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label" th:text="${'Status: '}"></label>
+            <div class="col-sm-10">
+            <input id="status" readonly class="form-control-plaintext" type="text"
+                   th:value="${request.getOrderStatus()}"
+                   pattern="^[ a-zA-z]*$" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="customer" class="col-sm-2 col-form-label" th:text="${'Customer: '}"></label>
+            <div class="col-sm-10">
+            <input id="customer" class="form-control" type="text" th:field="*{customerName}" pattern="^[ a-zA-z]*$" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="address" class="col-sm-2 col-form-label" th:text="${'Customer''s address: '}"></label>
+            <div class="col-sm-10">
+            <input id="address" class="form-control" type="text" th:field="*{customerAddress}" pattern="^[ a-zA-z]*$" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="price" class="col-sm-2 col-form-label" th:text="${'Total price: '}"></label>
+            <div class="col-sm-10">
+            <input id="price" readonly class="form-control-plaintext" type="text"
+                   th:value="${request.getTotalPrice()}"
+                   pattern="^[ a-zA-z]*$" required/>
+            </div>
+        </div>
         <div>
             <h2>Order positions:</h2>
             <label th:if="${request.getOrderPositions().isEmpty()}">There are no order positions at the moment</label>
