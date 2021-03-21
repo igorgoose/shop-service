@@ -3,12 +3,15 @@ package by.bsu.tp.lab2.service.impl;
 import by.bsu.tp.lab2.model.OrderPosition;
 import by.bsu.tp.lab2.model.OrderRequest;
 import by.bsu.tp.lab2.model.Product;
+import by.bsu.tp.lab2.repsoitory.EmployeeRepository;
 import by.bsu.tp.lab2.repsoitory.OrderPositionRepository;
 import by.bsu.tp.lab2.repsoitory.OrderRequestRepository;
 import by.bsu.tp.lab2.repsoitory.ProductRepository;
 import by.bsu.tp.lab2.service.OrderRequestService;
 import lombok.AllArgsConstructor;
 import org.hibernate.criterion.Order;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,6 +25,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     private final OrderRequestRepository orderRequestRepository;
     private final ProductRepository productRepository;
     private final OrderPositionRepository orderPositionRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     public List<OrderRequest> getAll() {
@@ -35,7 +39,12 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     public OrderRequest create() {
-        return orderRequestRepository.save(new OrderRequest());
+        String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        OrderRequest orderRequest = new OrderRequest();
+        orderRequest.setAuthor(employeeRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Unknown user " + username))
+        );
+        return orderRequestRepository.save(orderRequest);
     }
 
     @Override

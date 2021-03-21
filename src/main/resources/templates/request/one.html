@@ -40,9 +40,9 @@
                     <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/requests/{id}/edit(id = ${request.getId()})}">Edit</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline my-2 my-lg-0" th:method="post" th:action="@{/logout}">
+                <!--                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign Out</button>
             </form>
         </div>
     </nav>
@@ -51,7 +51,7 @@
     <h1 th:text="${'Order Request ' + request.getId()}"></h1>
     <h2>Common Data</h2>
     <p>
-        <label th:text="${'Author: '}"></label>
+        <label th:text="${'Author: ' + request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></label>
         <br/>
         <label th:text="${'Customer: ' + (request.getCustomerName() == null ? 'empty' : request.getCustomerName())}"></label>
         <br/>

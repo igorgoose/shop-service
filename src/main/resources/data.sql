@@ -5,9 +5,11 @@ drop table if exists order_requests;
 
 create table users(
     id int auto_increment primary key,
+    username varchar(256) not null unique,
+    password varchar(256) not null,
     first_name varchar(256) not null,
     last_name varchar(256) not null,
-    role varchar(32)
+    role varchar(32) not null
 );
 
 create table products(
@@ -35,7 +37,6 @@ insert into products (name, price) VALUES ('shower gel', '14.99');
 insert into products (name, price) VALUES ('liquid soap', '14.99');
 insert into products (name, price) VALUES ('toothbrush', '14.99');
 insert into products (name, price) VALUES ('blade', '14.99');
-insert into users (id, first_name, last_name, role) VALUES (1, 'Default', 'User', 'ADMIN');
 
 create table order_requests(
     id int auto_increment primary key,

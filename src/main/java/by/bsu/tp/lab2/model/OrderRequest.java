@@ -19,7 +19,7 @@ public class OrderRequest {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private User author;
+    private Employee author;
 
     private String customerName;
     private String customerAddress;

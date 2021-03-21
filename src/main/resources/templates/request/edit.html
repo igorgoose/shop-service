@@ -36,13 +36,13 @@
                         <!--                        <a class="dropdown-item" href="#">Something else here</a>-->
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link disabled" href="#">Disabled</a>-->
+<!--                </li>-->
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline my-2 my-lg-0" th:method="post" th:action="@{/logout}">
+                <!--                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign Out</button>
             </form>
         </div>
     </nav>
@@ -52,8 +52,7 @@
     <form th:method="PUT" th:action="@{/requests/{id}(id = ${request.getId})}" th:object="${request}">
         <h2>Common Data</h2>
         <p>
-            <label for="author" th:text="${'Author: '}"></label>
-            <input type="text" value=" " id="author" readonly/>
+            <label th:text="${'Author: ' + request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></label>
             <br/>
             <label for="customer" th:text="${'Customer: '}"></label>
             <input id="customer" type="text" th:field="*{customerName}" pattern="^[ a-zA-z]*$" required/>
@@ -84,7 +83,7 @@
                         <form th:method="patch"
                               th:action="@{/requests/{id}/products/{product_id}/remove(id = ${request.getId()}, product_id=${orderPosition.getProduct().getId()})}">
                             <label>
-                                <input type="text" pattern="^[1-9][0-9]*$" required th:default="1"
+                                <input type="text" pattern="^[1-9][0-9]*$" th:default="1"
                                        placeholder="Quantity to remove"
                                        name="quantity">
                             </label>

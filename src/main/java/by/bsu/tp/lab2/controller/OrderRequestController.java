@@ -46,13 +46,6 @@ public class OrderRequestController {
         return "request/addProducts";
     }
 
-    @GetMapping("/{id}/patch")
-    public String patch(@PathVariable("id") long requestId, Model model) {
-        model.addAttribute("products", productService.getAllProducts());
-        model.addAttribute("requestId", requestId);
-        return "request/patch";
-    }
-
     @PutMapping("/{id}")
     public String put(@PathVariable("id") long id,
                       @ModelAttribute("request") OrderRequest request,
