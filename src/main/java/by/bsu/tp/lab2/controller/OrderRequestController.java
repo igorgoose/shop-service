@@ -3,6 +3,7 @@ package by.bsu.tp.lab2.controller;
 import by.bsu.tp.lab2.model.OrderRequest;
 import by.bsu.tp.lab2.service.OrderRequestService;
 import by.bsu.tp.lab2.service.ProductService;
+import by.bsu.tp.lab2.util.AuthenticationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,16 +16,19 @@ public class OrderRequestController {
 
     private final ProductService productService;
     private final OrderRequestService orderRequestService;
+    private final AuthenticationUtil authenticationUtil;
 
     @GetMapping
     public String index(Model model) {
         model.addAttribute("requests", orderRequestService.getAll());
+        authenticationUtil.injectEmployee(model);
         return "request/index";
     }
 
     @GetMapping("/{id}")
     public String one(@PathVariable("id") long id, Model model) {
         model.addAttribute("request", orderRequestService.getById(id));
+        authenticationUtil.injectEmployee(model);
         return "request/one";
     }
 
@@ -36,6 +40,7 @@ public class OrderRequestController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("request", orderRequestService.getById(id));
+        authenticationUtil.injectEmployee(model);
         return "request/edit";
     }
 
@@ -43,6 +48,7 @@ public class OrderRequestController {
     public String addProducts(@PathVariable("id") long id, Model model) {
         model.addAttribute("request", orderRequestService.getById(id));
         model.addAttribute("products", productService.getAllProducts());
+        authenticationUtil.injectEmployee(model);
         return "request/addProducts";
     }
 
@@ -52,6 +58,7 @@ public class OrderRequestController {
                       Model model) {
         model.addAttribute("request", orderRequestService.update(id, request));
         model.addAttribute("products", productService.getAllProducts());
+        authenticationUtil.injectEmployee(model);
         return "redirect:" + id;
     }
 
@@ -63,6 +70,7 @@ public class OrderRequestController {
         orderRequestService.addProduct(requestId, productId, quantity);
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("request", orderRequestService.getById(requestId));
+        authenticationUtil.injectEmployee(model);
         return "redirect:/requests/" + requestId + "/products";
     }
 
@@ -73,7 +81,16 @@ public class OrderRequestController {
                                 Model model) {
         orderRequestService.removeProduct(requestId, productId, quantity);
         model.addAttribute("request", orderRequestService.getById(requestId));
+        authenticationUtil.injectEmployee(model);
         return "redirect:/requests/" + requestId + "/edit";
+    }
+
+    @PatchMapping("/{id}/status")
+    public String updateStatus(@PathVariable("id") long id,
+                               @ModelAttribute("status") String status,
+                               @ModelAttribute("redirect") String redirect) {
+        orderRequestService.updateStatus(id, status);
+        return "redirect:" + redirect;
     }
 
 }

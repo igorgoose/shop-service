@@ -3,6 +3,7 @@ package by.bsu.tp.lab2.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +15,10 @@ public class OrderRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double totalPrice;
-    private boolean accepted;
-    private boolean sent;
+    private String orderStatus;
+    @Lob
+    private byte[] bill;
+    private Timestamp creationDate;
 
     @ManyToOne
     @JoinColumn(name = "author_id")

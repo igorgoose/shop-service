@@ -60,6 +60,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee findByUsername(String username) {
+        return employeeRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User " + username + "not found"));
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return convertToUserDetails(employeeRepository.findByUsername(s)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + s + "not found"))

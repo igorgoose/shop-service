@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Requests</title>
+    <title>Orders</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/main.css}">
@@ -28,16 +28,13 @@
                     class="nav-item">
                     <a class="nav-link" th:href="@{/orders}">Orders</a>
                 </li>
-                <li class="nav-item dropdown active">
+                <li th:if="${user.getRole().equals('ADMIN')}" class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Requests
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}"
-                           class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a th:if="${user.getRole().equals('CLERK')}"
-                           class="dropdown-item" th:href="@{/requests/new}">Create</a>
+                        <a class="dropdown-item" th:href="@{/requests}">All</a>
                     </div>
                 </li>
             </ul>
@@ -49,30 +46,30 @@
     </nav>
 </div>
 <div class="container-fluid">
-    <h1>Order Requests</h1>
-    <label th:if="${requests.isEmpty()}">There are no requests at the moment</label>
-    <table th:if="${!requests.isEmpty()}" class="table">
+    <h1>Orders</h1>
+    <label th:if="${orders.isEmpty()}">There are no orders at the moment</label>
+    <table th:if="${!orders.isEmpty()}" class="table">
         <thead>
         <tr>
             <th>ID</th>
             <th>Author</th>
             <th>Status</th>
             <th>Total Price</th>
-            <th></th>
-            <th th:if="${user.getRole().equals('CLERK')}"></th>
+            <th th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}"></th>
+            <th th:if="${user.getRole().equals('SALESMAN')}"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="request : ${requests}">
-            <td th:text="${request.getId()}"></td>
-            <td th:text="${request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></td>
-            <td th:text="${request.getOrderStatus()}"></td>
-            <td th:text="${request.getTotalPrice()}"></td>
-            <td>
-                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{requests/{id}(id = ${request.getId()})}">View</a>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.getId()}"></td>
+            <td th:text="${order.getAuthor().getFirstName() + ' ' + order.getAuthor().getLastName()}"></td>
+            <td th:text="${order.getOrderStatus()}"></td>
+            <td th:text="${order.getTotalPrice()}"></td>
+            <td th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}">
+                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/orders/{id}(id = ${order.getId()})}">View</a>
             </td>
-            <td th:if="${user.getRole().equals('CLERK') && request.getOrderStatus().equals('created')}">
-                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{requests/{id}/edit(id = ${request.getId()})}">Edit</a>
+            <td th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}">
+                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/orders/{id}/edit(id = ${order.getId()})}">Edit</a>
             </td>
         </tr>
         </tbody>

@@ -9,7 +9,7 @@
 <body>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" th:href="@{/home}">TP_LAB2</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,32 +23,33 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/products}">Products</a>
                 </li>
-                <li class="nav-item dropdown">
+                <li th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}"
+                    class="nav-item">
+                    <a class="nav-link" th:href="@{/orders}">Orders</a>
+                </li>
+                <li th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Requests
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a class="dropdown-item" th:href="@{/requests/new}">Create</a>
-                        <!--                        <div class="dropdown-divider"></div>-->
-                        <!--                        <a class="dropdown-item" href="#">Something else here</a>-->
+                        <a th:if="${user.getRole().equals('CLERK')}"
+                           class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline my-2 my-lg-0" th:method="post" th:action="@{/logout}">
+                <label class="form-control mr-sm-2" th:text="${#authentication.getName()}"></label>
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign Out</button>
             </form>
         </div>
     </nav>
 </div>
 <div class="container-fluid">
     <h1>Products</h1>
-    <table class="table">
+    <label th:if="${products.isEmpty()}">There are no products at the moment</label>
+    <table th:if="${!products.isEmpty()}" class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -69,5 +70,14 @@
     </table>
     <hr/>
 </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Requests</title>
+    <title th:text="${'Edit Order ' + order.getId()}"></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/main.css}">
@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/home}">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/home}">Home<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/products}">Products</a>
@@ -27,18 +27,6 @@
                 <li th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}"
                     class="nav-item">
                     <a class="nav-link" th:href="@{/orders}">Orders</a>
-                </li>
-                <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Requests
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}"
-                           class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a th:if="${user.getRole().equals('CLERK')}"
-                           class="dropdown-item" th:href="@{/requests/new}">Create</a>
-                    </div>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" th:method="post" th:action="@{/logout}">
@@ -49,35 +37,55 @@
     </nav>
 </div>
 <div class="container-fluid">
-    <h1>Order Requests</h1>
-    <label th:if="${requests.isEmpty()}">There are no requests at the moment</label>
-    <table th:if="${!requests.isEmpty()}" class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Author</th>
-            <th>Status</th>
-            <th>Total Price</th>
-            <th></th>
-            <th th:if="${user.getRole().equals('CLERK')}"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="request : ${requests}">
-            <td th:text="${request.getId()}"></td>
-            <td th:text="${request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></td>
-            <td th:text="${request.getOrderStatus()}"></td>
-            <td th:text="${request.getTotalPrice()}"></td>
-            <td>
-                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{requests/{id}(id = ${request.getId()})}">View</a>
-            </td>
-            <td th:if="${user.getRole().equals('CLERK') && request.getOrderStatus().equals('created')}">
-                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{requests/{id}/edit(id = ${request.getId()})}">Edit</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <hr/>
+    <h1 th:text="${'Order Request ' + order.getId()}"></h1>
+    <h2>Common Data</h2>
+    <p>
+        <label th:text="${'Author: ' + order.getAuthor().getFirstName() + ' ' + order.getAuthor().getLastName()}"></label>
+        <br/>
+        <label th:text="${'Status: ' + order.getOrderStatus()}"></label>
+        <br/>
+        <label th:text="${'Customer: ' + order.getCustomerName()}"></label>
+        <br/>
+        <label th:text="${'Customer''s address: ' + order.getCustomerAddress()}"></label>
+        <br/>
+        <label th:text="${'Total price: ' + order.getTotalPrice()}"></label>
+    </p>
+
+    <div>
+        <h2>Order positions:</h2>
+        <label th:if="${order.getOrderPositions().isEmpty()}">There are no order positions at the moment</label>
+        <table th:if="${!order.getOrderPositions().isEmpty()}" class="table">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price apiece</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderPosition : ${order.getOrderPositions()}">
+                <td th:text="${orderPosition.getProduct().getName()}"></td>
+                <td th:text="${orderPosition.getProduct().getPrice()}"></td>
+                <td th:text="${orderPosition.getQuantity()}"></td>
+                <td>
+                    <form th:method="patch"
+                          th:action="@{/orders/{id}/products/{product_id}/remove(id = ${order.getId()}, product_id=${orderPosition.getProduct().getId()})}">
+                        <label>
+                            <input type="text" pattern="^[1-9][0-9]*$" th:default="1"
+                                   placeholder="Quantity to remove"
+                                   name="quantity">
+                        </label>
+                        <input class="btn btn-outline-danger my-2 my-sm-0" type="submit" value="-">
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <hr/>
+        <a class="btn btn-outline-primary my-2 my-sm-0"
+           th:href="@{/orders/{id}/products(id = ${order.getId()})}">Add products</a>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

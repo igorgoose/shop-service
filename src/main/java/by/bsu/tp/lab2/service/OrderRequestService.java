@@ -6,9 +6,14 @@ import java.util.List;
 
 public interface OrderRequestService {
     List<OrderRequest> getAll();
+    List<OrderRequest> getOrders();
+    List<OrderRequest> getOrdersByStatus(String status);
     OrderRequest getById(long id);
     OrderRequest create();
     void addProduct(long requestId, long productId, int quantity);
     void removeProduct(long requestId, long productId, int quantity);
     OrderRequest update(long id, OrderRequest orderRequest);
+    OrderRequest updateStatus(long id, String status);
+    OrderRequest issueBill(long id);
+    byte[] getBillByOrderId(long id);
 }

@@ -30,6 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/products/**").hasAuthority("products.edit")
                 .antMatchers("/requests", "/requests/{id:\\d+}").hasAnyAuthority("requests.view", "requests.edit")
                 .antMatchers("/requests/**").hasAuthority("requests.edit")
+                .antMatchers("/orders", "/orders/{id:\\d+}").hasAnyAuthority("orders.view", "orders.edit")
+                .antMatchers("/orders/**").hasAuthority("orders.edit")
                 .antMatchers("/", "/home").hasAuthority("employee")
                 .anyRequest().authenticated()
                 .and()

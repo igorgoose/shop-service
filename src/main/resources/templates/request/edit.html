@@ -24,24 +24,25 @@
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/products}">Products</a>
                 </li>
+                <li th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}"
+                    class="nav-item">
+                    <a class="nav-link" th:href="@{/orders}">Orders</a>
+                </li>
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Requests
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a class="dropdown-item" th:href="@{/requests/new}">Create</a>
-                        <!--                        <div class="dropdown-divider"></div>-->
-                        <!--                        <a class="dropdown-item" href="#">Something else here</a>-->
+                        <a th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}"
+                           class="dropdown-item" th:href="@{/requests}">All</a>
+                        <a th:if="${user.getRole().equals('CLERK')}"
+                           class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link disabled" href="#">Disabled</a>-->
-<!--                </li>-->
             </ul>
             <form class="form-inline my-2 my-lg-0" th:method="post" th:action="@{/logout}">
-                <!--                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+                <label class="form-control mr-sm-2" th:text="${#authentication.getName()}"></label>
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sign Out</button>
             </form>
         </div>
@@ -54,6 +55,8 @@
         <p>
             <label th:text="${'Author: ' + request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></label>
             <br/>
+            <label th:text="${'Status: ' + request.getOrderStatus()}"></label>
+            <br/>
             <label for="customer" th:text="${'Customer: '}"></label>
             <input id="customer" type="text" th:field="*{customerName}" pattern="^[ a-zA-z]*$" required/>
             <br/>
@@ -65,7 +68,8 @@
 
         <div>
             <h2>Order positions:</h2>
-            <table class="table">
+            <label th:if="${request.getOrderPositions().isEmpty()}">There are no order positions at the moment</label>
+            <table th:if="${!request.getOrderPositions().isEmpty()}" class="table">
                 <thead>
                 <tr>
                     <th>Product</th>
