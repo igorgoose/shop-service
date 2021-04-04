@@ -113,6 +113,7 @@
         <hr/>
         <a class="btn btn-outline-primary my-2 my-sm-0"
            th:href="@{/orders/{id}/products(id = ${order.getId()})}">Add products</a>
+        <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/orders/{id}(id = ${order.getId()})}">Save</a>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

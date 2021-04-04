@@ -18,4 +18,11 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<OrderPosition> orderPositions;
+
+    @ManyToMany
+    @JoinTable(
+            name = "products_to_product_seasons",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_season_id"))
+    private List<ProductSeason> productSeasons;
 }

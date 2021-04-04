@@ -1,6 +1,7 @@
 package by.bsu.tp.lab2.controller;
 
 import by.bsu.tp.lab2.model.OrderRequest;
+import by.bsu.tp.lab2.model.SeasonCheck;
 import by.bsu.tp.lab2.service.OrderRequestService;
 import by.bsu.tp.lab2.service.ProductService;
 import by.bsu.tp.lab2.util.AuthenticationUtil;
@@ -45,17 +46,19 @@ public class OrderRequestController {
     }
 
     @GetMapping("/{id}/products")
-    public String addProducts(@PathVariable("id") long id, Model model) {
+    public String addProducts(@RequestParam(value = "season", required = false) String[] seasons,
+            @PathVariable("id") long id, Model model) {
         model.addAttribute("request", orderRequestService.getById(id));
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("products", productService.getAllProducts(seasons));
+        model.addAttribute("seasonCheck", new SeasonCheck(seasons));
         authenticationUtil.injectEmployee(model);
         return "request/addProducts";
     }
 
     @PutMapping("/{id}")
     public String put(@PathVariable("id") long id,
-                      @ModelAttribute("request") OrderRequest request,
-                      Model model) {
+            @ModelAttribute("request") OrderRequest request,
+            Model model) {
         model.addAttribute("request", orderRequestService.update(id, request));
         model.addAttribute("products", productService.getAllProducts());
         authenticationUtil.injectEmployee(model);
@@ -64,9 +67,9 @@ public class OrderRequestController {
 
     @PatchMapping("/{id}/products/{product_id}/add")
     public String addProduct(@ModelAttribute("quantity") int quantity,
-                             @PathVariable("product_id") long productId,
-                             @PathVariable("id") long requestId,
-                             Model model) {
+            @PathVariable("product_id") long productId,
+            @PathVariable("id") long requestId,
+            Model model) {
         orderRequestService.addProduct(requestId, productId, quantity);
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("request", orderRequestService.getById(requestId));
@@ -76,9 +79,9 @@ public class OrderRequestController {
 
     @PatchMapping("/{id}/products/{product_id}/remove")
     public String removeProduct(@ModelAttribute("quantity") int quantity,
-                                @PathVariable("product_id") long productId,
-                                @PathVariable("id") long requestId,
-                                Model model) {
+            @PathVariable("product_id") long productId,
+            @PathVariable("id") long requestId,
+            Model model) {
         orderRequestService.removeProduct(requestId, productId, quantity);
         model.addAttribute("request", orderRequestService.getById(requestId));
         authenticationUtil.injectEmployee(model);
@@ -87,8 +90,8 @@ public class OrderRequestController {
 
     @PatchMapping("/{id}/status")
     public String updateStatus(@PathVariable("id") long id,
-                               @ModelAttribute("status") String status,
-                               @ModelAttribute("redirect") String redirect) {
+            @ModelAttribute("status") String status,
+            @ModelAttribute("redirect") String redirect) {
         orderRequestService.updateStatus(id, status);
         return "redirect:" + redirect;
     }

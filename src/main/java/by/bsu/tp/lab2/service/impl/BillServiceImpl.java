@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
-import java.util.Date;
 
 @Service
 public class BillServiceImpl implements BillService {

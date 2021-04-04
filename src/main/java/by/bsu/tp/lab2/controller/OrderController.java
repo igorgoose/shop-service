@@ -1,6 +1,7 @@
 package by.bsu.tp.lab2.controller;
 
 import by.bsu.tp.lab2.model.OrderRequest;
+import by.bsu.tp.lab2.model.SeasonCheck;
 import by.bsu.tp.lab2.service.OrderRequestService;
 import by.bsu.tp.lab2.service.ProductService;
 import by.bsu.tp.lab2.util.AuthenticationUtil;
@@ -52,9 +53,11 @@ public class OrderController {
     }
 
     @GetMapping("/{id}/products")
-    public String addProducts(@PathVariable("id") long id, Model model) {
+    public String addProducts(@RequestParam(value = "season", required = false) String[] seasons,
+            @PathVariable("id") long id, Model model) {
         model.addAttribute("order", orderRequestService.getById(id));
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("products", productService.getAllProducts(seasons));
+        model.addAttribute("seasonCheck", new SeasonCheck(seasons));
         authenticationUtil.injectEmployee(model);
         return "order/addProducts";
     }
