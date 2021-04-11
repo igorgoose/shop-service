@@ -4,6 +4,7 @@ import by.bsu.tp.lab2.model.Product;
 import by.bsu.tp.lab2.model.SeasonCheck;
 import by.bsu.tp.lab2.service.ProductService;
 import by.bsu.tp.lab2.util.AuthenticationUtil;
+import by.bsu.tp.lab2.util.ProductDtoConverter;
 import lombok.AllArgsConstructor;
 import org.dom4j.rule.Mode;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static by.bsu.tp.lab2.util.ProductDtoConverter.convert;
 
 @AllArgsConstructor
 @Controller
@@ -24,7 +27,7 @@ public class ProductController {
 
     @GetMapping
     public String index(@RequestParam(value = "season", required = false) String[] seasons, Model model) {
-        model.addAttribute("products", productService.getAllProducts(seasons));
+        model.addAttribute("products", convert(productService.getAllProducts(seasons)));
         authenticationUtil.injectEmployee(model);
         model.addAttribute("seasonCheck", new SeasonCheck(seasons));
         return "product/index";
@@ -43,7 +46,7 @@ public class ProductController {
         return "product/edit";
     }
 
-    @PostMapping()
+    @PostMapping
     public String createProduct(@ModelAttribute("product") Product product) {
         productService.createProduct(product);
         return "redirect:/products";
