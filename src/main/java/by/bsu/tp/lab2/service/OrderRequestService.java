@@ -1,7 +1,9 @@
 package by.bsu.tp.lab2.service;
 
 import by.bsu.tp.lab2.model.OrderRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface OrderRequestService {
@@ -14,6 +16,6 @@ public interface OrderRequestService {
     void removeProduct(long requestId, long productId, int quantity);
     OrderRequest update(long id, OrderRequest orderRequest);
     OrderRequest updateStatus(long id, String status);
-    OrderRequest issueBill(long id);
+    OrderRequest issueBill(long id) throws IOException;
     byte[] getBillByOrderId(long id);
 }

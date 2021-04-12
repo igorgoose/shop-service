@@ -10,12 +10,14 @@ import by.bsu.tp.lab2.repsoitory.OrderRequestRepository;
 import by.bsu.tp.lab2.repsoitory.ProductRepository;
 import by.bsu.tp.lab2.service.BillService;
 import by.bsu.tp.lab2.service.OrderRequestService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -155,7 +157,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     }
 
     @Override
-    public OrderRequest issueBill(long id) {
+    public OrderRequest issueBill(long id) throws IOException {
         OrderRequest persistedRequest = orderRequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order request with id " + id + "not found."));
         if (persistedRequest.getOrderStatus().equals(OrderStatus.DECLINED.getInternalName())

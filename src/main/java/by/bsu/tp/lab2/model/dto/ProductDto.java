@@ -21,7 +21,7 @@ public class ProductDto {
         for (ProductSeason season : product.getProductSeasons()) {
             stringBuilder.append(season.getName()).append(" | ");
         }
-        if (!stringBuilder.isEmpty()) {
+        if (stringBuilder.length() != 0) {
             stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length());
         }
         seasons = stringBuilder.toString();

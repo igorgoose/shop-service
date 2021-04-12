@@ -26,19 +26,14 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "product_season_id"))
     private List<ProductSeason> productSeasons;
 
-    private String seasonsString;
-
     public String getSeasonsString() {
-        if(seasonsString == null) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (ProductSeason season : productSeasons) {
-                stringBuilder.append(season.getName()).append(" | ");
-            }
-            if (!stringBuilder.isEmpty()) {
-                stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length());
-            }
-            seasonsString = stringBuilder.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ProductSeason season : productSeasons) {
+            stringBuilder.append(season.getName()).append(" | ");
         }
-        return seasonsString;
+        if (stringBuilder.length() != 0) {
+            stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length());
+        }
+        return stringBuilder.toString();
     }
 }

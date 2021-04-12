@@ -5,6 +5,7 @@ import by.bsu.tp.lab2.model.SeasonCheck;
 import by.bsu.tp.lab2.service.OrderRequestService;
 import by.bsu.tp.lab2.service.ProductService;
 import by.bsu.tp.lab2.util.AuthenticationUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @AllArgsConstructor
@@ -88,7 +90,7 @@ public class OrderController {
     }
 
     @PostMapping("/{id}/bill")
-    public String issueBill(@PathVariable("id") long id, @ModelAttribute("redirect") String redirect) {
+    public String issueBill(@PathVariable("id") long id, @ModelAttribute("redirect") String redirect) throws IOException {
         orderRequestService.issueBill(id);
         return "redirect:/orders/" + id;
     }
