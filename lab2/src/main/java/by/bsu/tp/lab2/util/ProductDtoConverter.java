@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class ProductDtoConverter {
 
-    public static ProductDto convert(Product product) {
-        return new ProductDto(product);
+    public static ProductDto.Response.Short convert(Product product) {
+        return new ProductDto.Response.Short(product);
     }
 
-    public static List<ProductDto> convert(List<Product> products) {
-        return products.stream().map(ProductDto::new).collect(Collectors.toList());
+    public static List<ProductDto.Response.Short> convert(List<Product> products) {
+        return products.stream().map(ProductDto.Response.Short::new).collect(Collectors.toList());
     }
 }

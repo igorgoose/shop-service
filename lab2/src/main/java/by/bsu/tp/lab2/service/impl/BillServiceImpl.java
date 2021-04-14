@@ -1,6 +1,7 @@
 package by.bsu.tp.lab2.service.impl;
 
 import by.bsu.tp.lab2.model.OrderRequest;
+import by.bsu.tp.lab2.model.dto.OrderRequestDto;
 import by.bsu.tp.lab2.service.BillService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +28,8 @@ public class BillServiceImpl implements BillService {
         String url = accountantUrl + BILL_ENDPOINT_URL;
         MediaType mediaType = MediaType.parse("application/json");
         OkHttpClient client = new OkHttpClient().newBuilder().build();
-        RequestBody requestBody = RequestBody.create(new ObjectMapper().writeValueAsString(orderRequest), mediaType);
+        OrderRequestDto.Response.Full orderRequestDto = new OrderRequestDto.Response.Full(orderRequest);
+        RequestBody requestBody = RequestBody.create(new ObjectMapper().writeValueAsString(orderRequestDto), mediaType);
         Request request = new Request.Builder()
                 .url(url)
                 .method("POST", requestBody)

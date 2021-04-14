@@ -43,16 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-//    @Bean
-//    public AuthenticationFailureHandler authenticationFailureHandler() {
-//        return new SimpleUrlAuthenticationFailureHandler();
-//    }
-//
-//    @Bean
-//    public LogoutSuccessHandler logoutSuccessHandler() {
-//        return new SimpleUrlLogoutSuccessHandler();
-//    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

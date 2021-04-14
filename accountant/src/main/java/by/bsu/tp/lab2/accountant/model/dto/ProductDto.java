@@ -1,6 +1,6 @@
-package by.bsu.tp.lab2.model.dto;
+package by.bsu.tp.lab2.accountant.model.dto;
 
-import by.bsu.tp.lab2.model.Product;
+import by.bsu.tp.lab2.accountant.model.Product;
 import lombok.Data;
 
 public enum ProductDto {

@@ -1,7 +1,7 @@
 package by.bsu.tp.lab2.accountant.service.impl;
 
-import by.bsu.tp.lab2.accountant.model.OrderPosition;
-import by.bsu.tp.lab2.accountant.model.OrderRequest;
+import by.bsu.tp.lab2.accountant.model.dto.OrderPositionDto;
+import by.bsu.tp.lab2.accountant.model.dto.OrderRequestDto;
 import by.bsu.tp.lab2.accountant.service.BillService;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 public class BillServiceImpl implements BillService {
 
     @Override
-    public byte[] issueBill(OrderRequest orderRequest) {
+    public byte[] issueBill(OrderRequestDto.Response.Full orderRequest) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
                 .append("Issuer: TP_LAB2 Inc.\n")
@@ -21,8 +21,8 @@ public class BillServiceImpl implements BillService {
                 .append("Customer: ").append(orderRequest.getCustomerName()).append("\n")
                 .append("Delivery to: ").append(orderRequest.getCustomerAddress()).append("\n")
         .append("Order Positions : Quantity : Price apiece\n");
-        for (OrderPosition orderPosition : orderRequest.getOrderPositions()) {
-            stringBuilder.append(orderPosition.getProduct().getName())
+        for (OrderPositionDto.Response.Short orderPosition : orderRequest.getOrderPositions()) {
+            stringBuilder.append(orderPosition.getProductName())
                     .append(" : ")
                     .append(orderPosition.getQuantity())
                     .append(" : ")
