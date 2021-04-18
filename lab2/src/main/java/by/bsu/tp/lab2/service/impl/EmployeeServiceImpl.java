@@ -2,7 +2,7 @@ package by.bsu.tp.lab2.service.impl;
 
 import by.bsu.tp.lab2.model.Employee;
 import by.bsu.tp.lab2.model.UserRole;
-import by.bsu.tp.lab2.repsoitory.EmployeeRepository;
+import by.bsu.tp.lab2.repository.EmployeeRepository;
 import by.bsu.tp.lab2.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;

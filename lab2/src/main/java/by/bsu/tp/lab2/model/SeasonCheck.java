@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class SeasonCheck {
@@ -22,6 +23,18 @@ public class SeasonCheck {
             fall = seasonList.contains("fall");
             winter = seasonList.contains("winter");
             spring = seasonList.contains("spring");
+        }
+    }
+
+    public SeasonCheck(List<ProductSeason> seasons) {
+        if(seasons == null) {
+            summer = fall = winter = spring = false;
+        } else {
+            List<String> seasonNames = seasons.stream().map(ProductSeason::getName).collect(Collectors.toList());
+            summer = seasonNames.contains("summer");
+            fall = seasonNames.contains("fall");
+            winter = seasonNames.contains("winter");
+            spring = seasonNames.contains("spring");
         }
     }
 }

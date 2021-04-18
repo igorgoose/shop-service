@@ -9,20 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static by.bsu.tp.lab2.util.ProductDtoConverter.convert;
-
 @AllArgsConstructor
 @Controller
 @RequestMapping("/products")
 public class ProductController {
-
 
     private final ProductService productService;
     private final AuthenticationUtil authenticationUtil;
 
     @GetMapping
     public String index(@RequestParam(value = "season", required = false) String[] seasons, Model model) {
-        model.addAttribute("products", convert(productService.getAllProducts(seasons)));
+        model.addAttribute("products", productService.getAllProducts(seasons));
         authenticationUtil.injectEmployee(model);
         model.addAttribute("seasonCheck", new SeasonCheck(seasons));
         return "product/index";
@@ -36,21 +33,25 @@ public class ProductController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
-        model.addAttribute("product", productService.getById(id));
+        Product product = productService.getById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("seasonCheck", new SeasonCheck(product.getProductSeasons()));
         authenticationUtil.injectEmployee(model);
         return "product/edit";
     }
 
     @PostMapping
-    public String createProduct(@ModelAttribute("product") Product product) {
-        productService.createProduct(product);
+    public String createProduct(@ModelAttribute("product") Product product,
+            @ModelAttribute("season") String[] seasons) {
+        productService.createProduct(product, seasons);
         return "redirect:/products";
     }
 
     @PutMapping("/{id}")
     public String updateProduct(@PathVariable("id") long id,
-                                @ModelAttribute("product") Product product) {
-        productService.updateProduct(id, product);
+            @ModelAttribute("product") Product product,
+            @ModelAttribute("season") String[] seasons) {
+        productService.updateProduct(id, product, seasons);
         return "redirect:/products";
     }
 }

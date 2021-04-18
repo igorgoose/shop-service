@@ -1,7 +1,6 @@
-package by.bsu.tp.lab2.repsoitory;
+package by.bsu.tp.lab2.repository;
 
 import by.bsu.tp.lab2.model.OrderRequest;
-import org.hibernate.criterion.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

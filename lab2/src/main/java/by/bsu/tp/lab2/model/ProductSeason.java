@@ -2,9 +2,7 @@ package by.bsu.tp.lab2.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -13,6 +11,7 @@ public class ProductSeason {
 
     @Id
     private Long id;
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "productSeasons")

@@ -20,6 +20,7 @@ public class Product {
     private List<OrderPosition> orderPositions;
 
     @ManyToMany
+            //(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "products_to_product_seasons",
             joinColumns = @JoinColumn(name = "product_id"),

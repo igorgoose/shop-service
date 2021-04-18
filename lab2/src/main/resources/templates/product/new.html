@@ -55,7 +55,7 @@
 </div>
 <div class="container-fluid">
     <form th:method="post" th:action="@{/products}" th:object="${product}">
-        <div class="form-group row">
+        <div class="form-group">
             <label for="name">Product Name</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="name" pattern="^[ a-zA-z]*$" required
@@ -79,41 +79,29 @@
         <div class="form-group">
             <label for="quantity">Choose Seasons</label>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="season" value="all" id="check1">
-                <label class="form-check-label" for="check1">
-                    All
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="season" value="summer" id="checkSummer"
-                       th:checked="${seasonCheck.summer}">
+                <input class="form-check-input" type="checkbox" name="season" value="summer" id="checkSummer">
                 <label class="form-check-label" for="checkSummer">
                     Summer
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="season" value="fall" id="checkFall"
-                       th:checked="${seasonCheck.fall}">
+                <input class="form-check-input" type="checkbox" name="season" value="fall" id="checkFall">
                 <label class="form-check-label" for="checkFall">
                     Fall
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="season" value="winter" id="checkWinter"
-                       th:checked="${seasonCheck.winter}">
+                <input class="form-check-input" type="checkbox" name="season" value="winter" id="checkWinter">
                 <label class="form-check-label" for="checkWinter">
                     Winter
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="season" value="spring" id="checkSpring"
-                       th:checked="${seasonCheck.spring}">
+                <input class="form-check-input" type="checkbox" name="season" value="spring" id="checkSpring">
                 <label class="form-check-label" for="checkSpring">
                     Spring
                 </label>
             </div>
-            <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit">Apply</button>
-    </form>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

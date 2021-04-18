@@ -119,7 +119,7 @@
                        th:text="${product.getName()}"></a>
                 </td>
                 <td th:text="${product.getPrice()}"></td>
-                <td th:text="${product.getProductSeasons().get(0).getName() + ', ' + product.getProductSeasons().get(1).getName()}"></td>
+                <td th:text="${product.getSeasonsString()}"></td>
                 <td th:text="${{product.getQuantity()}}"></td>
                 <td>
                     <form th:method="patch" th:action="@{/requests/{id}/products/{product_id}/add(id = ${order.getId()}, product_id=${product.getId()})}">

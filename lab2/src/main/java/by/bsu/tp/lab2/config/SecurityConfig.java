@@ -1,6 +1,6 @@
 package by.bsu.tp.lab2.config;
 
-import by.bsu.tp.lab2.repsoitory.EmployeeRepository;
+import by.bsu.tp.lab2.repository.EmployeeRepository;
 import by.bsu.tp.lab2.service.EmployeeService;
 import by.bsu.tp.lab2.service.impl.EmployeeServiceImpl;
 import lombok.AllArgsConstructor;
