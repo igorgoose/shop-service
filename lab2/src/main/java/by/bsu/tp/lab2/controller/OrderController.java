@@ -5,7 +5,6 @@ import by.bsu.tp.lab2.model.SeasonCheck;
 import by.bsu.tp.lab2.service.OrderRequestService;
 import by.bsu.tp.lab2.service.ProductService;
 import by.bsu.tp.lab2.util.AuthenticationUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -36,21 +35,21 @@ public class OrderController {
             orders = orderRequestService.getOrders();
         }
         model.addAttribute("orders", orders);
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "order/index";
     }
 
     @GetMapping("/{id}")
     public String one(@PathVariable("id") long id, Model model) {
         model.addAttribute("order", orderRequestService.getById(id));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "order/one";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("order", orderRequestService.getById(id));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "order/edit";
     }
 
@@ -60,7 +59,7 @@ public class OrderController {
         model.addAttribute("order", orderRequestService.getById(id));
         model.addAttribute("products", productService.getAllProducts(seasons));
         model.addAttribute("seasonCheck", new SeasonCheck(seasons));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "order/addProducts";
     }
 
@@ -71,7 +70,7 @@ public class OrderController {
                                 Model model) {
         orderRequestService.removeProduct(orderId, productId, quantity);
         model.addAttribute("order", orderRequestService.getById(orderId));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "redirect:/orders/" + orderId + "/edit";
     }
 

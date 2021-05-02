@@ -1,6 +1,7 @@
 package by.bsu.tp.lab2.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,6 +15,7 @@ public class ProductSeason {
     @Column(unique = true)
     private String name;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "productSeasons")
     private List<Product> products;
 

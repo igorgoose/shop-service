@@ -1,8 +1,8 @@
 package by.bsu.tp.lab2.config;
 
-import by.bsu.tp.lab2.repository.EmployeeRepository;
-import by.bsu.tp.lab2.service.EmployeeService;
-import by.bsu.tp.lab2.service.impl.EmployeeServiceImpl;
+import by.bsu.tp.lab2.repository.UserRepository;
+import by.bsu.tp.lab2.service.UserService;
+import by.bsu.tp.lab2.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/requests/**").hasAuthority("requests.edit")
                 .antMatchers("/orders", "/orders/{id:\\d+}").hasAnyAuthority("orders.view", "orders.edit")
                 .antMatchers("/orders/**").hasAuthority("orders.edit")
-                .antMatchers("/", "/home").hasAuthority("employee")
+                .antMatchers("/", "/home").hasAnyAuthority("employee", "user")
+                .antMatchers("/signup").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -49,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public EmployeeService employeeService() {
-        return new EmployeeServiceImpl(employeeRepository, passwordEncoder());
+    public UserService userService() {
+        return new UserServiceImpl(userRepository, passwordEncoder());
     }
 
     @Override
@@ -61,6 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        return employeeService();
+        return userService();
     }
 }

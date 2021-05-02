@@ -11,9 +11,10 @@ import static by.bsu.tp.lab2.model.UserAuthority.*;
 
 
 public enum UserRole {
-    ADMIN(EMPLOYEE, PRODUCTS_EDIT, REQUESTS_VIEW, ORDERS_VIEW),
-    SALESMAN(EMPLOYEE, PRODUCTS_VIEW, ORDERS_EDIT),
-    CLERK(EMPLOYEE, PRODUCTS_VIEW, REQUESTS_EDIT);
+    ADMIN(EMPLOYEE, PRODUCTS_EDIT, REQUESTS_VIEW, ORDERS_VIEW, BASKET_VIEW, BASKET_EDIT),
+    SALESMAN(EMPLOYEE, PRODUCTS_VIEW, ORDERS_EDIT, BASKET_VIEW, BASKET_EDIT),
+    CLERK(EMPLOYEE, PRODUCTS_VIEW, REQUESTS_EDIT, BASKET_VIEW, BASKET_EDIT),
+    CLIENT(USER, PRODUCTS_VIEW, BASKET_VIEW, BASKET_EDIT);
 
     UserRole(UserAuthority... userAuthorities) {
         authorities = Arrays.stream(userAuthorities).map(UserAuthority::getAuthority).collect(Collectors.toList());

@@ -22,14 +22,14 @@ public class OrderRequestController {
     @GetMapping
     public String index(Model model) {
         model.addAttribute("requests", orderRequestService.getAll());
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "request/index";
     }
 
     @GetMapping("/{id}")
     public String one(@PathVariable("id") long id, Model model) {
         model.addAttribute("request", orderRequestService.getById(id));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "request/one";
     }
 
@@ -41,7 +41,7 @@ public class OrderRequestController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("request", orderRequestService.getById(id));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "request/edit";
     }
 
@@ -51,7 +51,7 @@ public class OrderRequestController {
         model.addAttribute("request", orderRequestService.getById(id));
         model.addAttribute("products", productService.getAllProducts(seasons));
         model.addAttribute("seasonCheck", new SeasonCheck(seasons));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "request/addProducts";
     }
 
@@ -61,7 +61,7 @@ public class OrderRequestController {
             Model model) {
         model.addAttribute("request", orderRequestService.update(id, request));
         model.addAttribute("products", productService.getAllProducts());
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "redirect:" + id;
     }
 
@@ -73,7 +73,7 @@ public class OrderRequestController {
         orderRequestService.addProduct(requestId, productId, quantity);
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("request", orderRequestService.getById(requestId));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "redirect:/requests/" + requestId + "/products";
     }
 
@@ -84,7 +84,7 @@ public class OrderRequestController {
             Model model) {
         orderRequestService.removeProduct(requestId, productId, quantity);
         model.addAttribute("request", orderRequestService.getById(requestId));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "redirect:/requests/" + requestId + "/edit";
     }
 

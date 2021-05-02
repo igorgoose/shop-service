@@ -1,6 +1,7 @@
 package by.bsu.tp.lab2.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,11 +17,12 @@ public class Product {
     private double price;
     private int quantity;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "product")
     private List<OrderPosition> orderPositions;
 
     @ManyToMany
-            //(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//            (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "products_to_product_seasons",
             joinColumns = @JoinColumn(name = "product_id"),

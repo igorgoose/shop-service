@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Entity(name = "users")
-public class Employee {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +20,6 @@ public class Employee {
 
     @OneToMany(mappedBy = "author")
     private List<OrderRequest> orderRequests;
+    @OneToMany(mappedBy = "user")
+    private List<BasketPosition> basketPositions;
 }

@@ -20,14 +20,14 @@ public class ProductController {
     @GetMapping
     public String index(@RequestParam(value = "season", required = false) String[] seasons, Model model) {
         model.addAttribute("products", productService.getAllProducts(seasons));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         model.addAttribute("seasonCheck", new SeasonCheck(seasons));
         return "product/index";
     }
 
     @GetMapping("/new")
     public String newProduct(@ModelAttribute("product") Product product, Model model) {
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "product/new";
     }
 
@@ -36,7 +36,7 @@ public class ProductController {
         Product product = productService.getById(id);
         model.addAttribute("product", product);
         model.addAttribute("seasonCheck", new SeasonCheck(product.getProductSeasons()));
-        authenticationUtil.injectEmployee(model);
+        authenticationUtil.injectUser(model);
         return "product/edit";
     }
 

@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
         Product persistedProduct = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product(id=" + id + ") not found"));
         persistedProduct.setName(product.getName());
         persistedProduct.setPrice(product.getPrice());
-        product.setProductSeasons(convertToProductSeasons(seasons));
+        persistedProduct.setProductSeasons(convertToProductSeasons(seasons));
         productRepository.save(persistedProduct);
     }
 

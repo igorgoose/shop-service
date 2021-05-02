@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @AllArgsConstructor
 @Controller
-@RequestMapping()
-public class HomeController {
+@RequestMapping("/basket")
+public class BasketController {
 
     private final AuthenticationUtil authenticationUtil;
 
-    @GetMapping(value = {"", "/home"})
+    @GetMapping()
     public String index(Model model) {
         authenticationUtil.injectUser(model);
-        return "index";
+        return "basket/index";
     }
-
 }

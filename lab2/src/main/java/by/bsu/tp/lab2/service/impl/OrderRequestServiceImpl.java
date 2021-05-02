@@ -4,7 +4,7 @@ import by.bsu.tp.lab2.model.OrderPosition;
 import by.bsu.tp.lab2.model.OrderRequest;
 import by.bsu.tp.lab2.model.OrderStatus;
 import by.bsu.tp.lab2.model.Product;
-import by.bsu.tp.lab2.repository.EmployeeRepository;
+import by.bsu.tp.lab2.repository.UserRepository;
 import by.bsu.tp.lab2.repository.OrderPositionRepository;
 import by.bsu.tp.lab2.repository.OrderRequestRepository;
 import by.bsu.tp.lab2.repository.ProductRepository;
@@ -29,7 +29,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     private final OrderRequestRepository orderRequestRepository;
     private final ProductRepository productRepository;
     private final OrderPositionRepository orderPositionRepository;
-    private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
     private final BillService billService;
 
     @Override
@@ -61,8 +61,8 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.setOrderStatus(OrderStatus.CREATED.getInternalName());
         orderRequest.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        orderRequest.setAuthor(employeeRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Unknown user " + username))
+        orderRequest.setAuthor(userRepository.findByUsername(username)
+                                             .orElseThrow(() -> new RuntimeException("Unknown user " + username))
         );
         return orderRequestRepository.save(orderRequest);
     }

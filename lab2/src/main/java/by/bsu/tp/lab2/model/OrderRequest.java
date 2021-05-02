@@ -16,13 +16,12 @@ public class OrderRequest {
     private Long id;
     private double totalPrice;
     private String orderStatus;
-    @Lob
     private byte[] bill;
     private Timestamp creationDate;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private Employee author;
+    private User author;
 
     private String customerName;
     private String customerAddress;

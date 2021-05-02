@@ -2,36 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Log in</title>
+    <title>Sign up</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 <div class="container" style="padding-top: 40px">
-    <div th:if="${param.error}">
-        Invalid username or password.
-    </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/signup}" method="post" th:object="${user}">
         <div class="form-group row">
             <label for="username" class="col-sm-2 col-form-label" th:text="${'Username'}"></label>
             <div class="col-sm-10">
-                <input id="username" class="form-control" type="text" name="username"/>
+                <input id="username" class="form-control" type="text" name="username" required th:field="*{username}"/>
             </div>
         </div>
         <div class="form-group row">
             <label for="password" class="col-sm-2 col-form-label" th:text="${'Password'}"></label>
             <div class="col-sm-10">
-                <input id="password" class="form-control" type="password" name="password"/>
+                <input id="password" class="form-control" type="password" name="password" required th:field="*{password}"/>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Sign In</button>
+        <div class="form-group row">
+            <label for="passwordControl" class="col-sm-2 col-form-label" th:text="${'Password control'}"></label>
+            <div class="col-sm-10">
+                <input id="passwordControl" class="form-control" type="password" required name="passwordControl"
+                       th:field="*{passwordControl}"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="firstName" class="col-sm-2 col-form-label" th:text="${'First name'}"></label>
+            <div class="col-sm-10">
+                <input id="firstName" class="form-control" type="text" name="firstName"required th:field="*{firstName}"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="lastName" class="col-sm-2 col-form-label" th:text="${'Last name'}"></label>
+            <div class="col-sm-10">
+                <input id="lastName" class="form-control" type="text" name="lastName" required th:field="*{lastName}"/>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Sign Up</button>
     </form>
-    <div>
-        Haven't got an account yet? <a class="btn btn-outline-success mb-2" href="/signup">Sign up</a>
-    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
