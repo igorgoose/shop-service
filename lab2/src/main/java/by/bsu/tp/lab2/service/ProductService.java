@@ -10,6 +10,6 @@ public interface ProductService {
     List<Product> getAllProducts(String[] seasons);
 
     Product getById(long id);
-    void createProduct(Product product, String[] seasons);
-    void updateProduct(long id, Product product, String[] seasons);
+    void createProduct(Product product, String... seasons);
+    void updateProduct(long id, Product product, String... seasons);
 }

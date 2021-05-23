@@ -17,23 +17,23 @@ create table if not exists products
 );
 
 insert into products (name, price)
-values ('soap', '2.99');
+values ('coat', '109.99');
 insert into products (name, price)
-VALUES ('shampoo', '14.99');
+VALUES ('warm sweater', '33.99');
 insert into products (name, price)
-VALUES ('lotion', '14.99');
+VALUES ('light sweater', '25.99');
 insert into products (name, price)
-VALUES ('shaving foam', '14.99');
+VALUES ('skirt', '25.99');
 insert into products (name, price)
-VALUES ('toothpaste', '14.99');
+VALUES ('shorts', '23.99');
 insert into products (name, price)
-VALUES ('shower gel', '14.99');
+VALUES ('socks', '4.99');
 insert into products (name, price)
-VALUES ('liquid soap', '14.99');
+VALUES ('high-waisted jeans', '39.99');
 insert into products (name, price)
-VALUES ('toothbrush', '14.99');
+VALUES ('scarf', '11.99');
 insert into products (name, price)
-VALUES ('blade', '14.99');
+VALUES ('warm hat', '14.99');
 
 create table if not exists order_requests
 (
@@ -87,32 +87,34 @@ insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (1, 3);
 
 insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (2, 2);
-insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (2, 3);
+insert into products_to_product_seasons(product_id, product_season_id)
+VALUES (2, 4);
 
 insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (3, 2);
+VALUES (3, 3);
 insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (3, 4);
+VALUES (3, 5);
 
+insert into products_to_product_seasons(product_id, product_season_id)
+VALUES (4, 2);
 insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (4, 5);
-insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (4, 3);
 
 insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (5, 5);
-insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (5, 4);
+VALUES (5, 2);
 
 insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (6, 2);
 insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (6, 3);
+insert into products_to_product_seasons(product_id, product_season_id)
+VALUES (6, 4);
+insert into products_to_product_seasons(product_id, product_season_id)
+VALUES (6, 5);
 
 insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (7, 2);
+VALUES (7, 3);
 insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (7, 5);
 
@@ -121,7 +123,5 @@ VALUES (8, 3);
 insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (8, 4);
 
-insert into products_to_product_seasons(product_id, product_season_id)
-VALUES (9, 2);
 insert into products_to_product_seasons(product_id, product_season_id)
 VALUES (9, 4);

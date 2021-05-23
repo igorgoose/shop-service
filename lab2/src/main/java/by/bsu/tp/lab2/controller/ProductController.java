@@ -42,16 +42,22 @@ public class ProductController {
 
     @PostMapping
     public String createProduct(@ModelAttribute("product") Product product,
-            @ModelAttribute("season") String[] seasons) {
-        productService.createProduct(product, seasons);
+            @ModelAttribute("summer") String summer,
+            @ModelAttribute("fall") String fall,
+            @ModelAttribute("winter") String winter,
+            @ModelAttribute("spring") String spring) {
+        productService.createProduct(product, summer, fall, winter, spring);
         return "redirect:/products";
     }
 
     @PutMapping("/{id}")
     public String updateProduct(@PathVariable("id") long id,
             @ModelAttribute("product") Product product,
-            @ModelAttribute("season") String[] seasons) {
-        productService.updateProduct(id, product, seasons);
+            @ModelAttribute("summer") String summer,
+            @ModelAttribute("fall") String fall,
+            @ModelAttribute("winter") String winter,
+            @ModelAttribute("spring") String spring) {
+        productService.updateProduct(id, product, summer, fall, winter, spring);
         return "redirect:/products";
     }
 }
