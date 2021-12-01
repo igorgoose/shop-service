@@ -9,7 +9,7 @@
 <body>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" th:href="@{/home}">TP_LAB2</a>
+        <a class="navbar-brand" th:href="@{/home}">DS_LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -41,7 +41,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}"
                            class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a th:if="${user.getRole().equals('CLERK')}"
+                        <a th:if="${user.getRole().equals('ADMIN')}"
                            class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
                 </li>
@@ -77,37 +77,20 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="quantity">Choose Seasons</label>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="summer" value="summer" id="checkSummer"
-                       th:checked="${seasonCheck.summer}">
-                <label class="form-check-label" for="checkSummer">
-                    Summer
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="fall" value="fall" id="checkFall"
-                       th:checked="${seasonCheck.fall}">
-                <label class="form-check-label" for="checkFall">
-                    Fall
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="winter" value="winter" id="checkWinter"
-                       th:checked="${seasonCheck.winter}">
-                <label class="form-check-label" for="checkWinter">
-                    Winter
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="spring" value="spring" id="checkSpring"
-                       th:checked="${seasonCheck.spring}">
-                <label class="form-check-label" for="checkSpring">
-                    Spring
-                </label>
-            </div>
+            <label for="seasons">Choose Seasons</label>
+            <select id="seasons" class="form-control" th:field="*{productSeasons}" multiple="multiple">
+                <option th:each="season : ${seasons}"
+                        th:field="*{productSeasons}"
+                        th:value="${{season}}"
+                        th:text="${season.getName()}"></option>
+            </select>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Description</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                      th:field="*{description}"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <a type="submit" class="btn btn-warning" th:href="@{/products/{id}(id = ${product.getId()})}">Cancel</a>
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

@@ -10,7 +10,7 @@
 <body>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" th:href="@{/home}">TP_LAB2</a>
+        <a class="navbar-brand" th:href="@{/home}">DS_LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -43,7 +43,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}"
                            class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a th:if="${user.getRole().equals('CLERK')}"
+                        <a th:if="${user.getRole().equals('CLERK') || user.getRole().equals('ADMIN')}"
                            class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
                 </li>
@@ -57,7 +57,7 @@
 </div>
 <div class="container-fluid">
     <h1 th:text="${'Order Request ' + request.getId()}"></h1>
-    <form th:method="PUT" th:action="@{/requests/{id}(id = ${request.getId})}" th:object="${request}">
+    <form id="update-form" th:method="PUT" th:action="@{/requests/{id}(id = ${request.getId})}" th:object="${request}">
         <h2>Common Data</h2>
         <div class="form-group row">
             <label for="author" class="col-sm-2 col-form-label" th:text="${'Author: '}"></label>
@@ -88,6 +88,12 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="date" class="col-sm-2 col-form-label" th:text="${'Due date: '}"></label>
+            <div class="col-sm-10">
+                <input type="date" id="date" th:value="${minDate}" th:min="${minDate}" th:field="*{dueDate}" required>
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="price" class="col-sm-2 col-form-label" th:text="${'Total price: '}"></label>
             <div class="col-sm-10">
             <input id="price" readonly class="form-control-plaintext" type="text"
@@ -95,6 +101,7 @@
                    pattern="^[ a-zA-z]*$" required/>
             </div>
         </div>
+    </form>
         <div>
             <h2>Order positions:</h2>
             <label th:if="${request.getOrderPositions().isEmpty()}">There are no order positions at the moment</label>
@@ -127,12 +134,10 @@
                 </tbody>
             </table>
             <hr/>
-            <a class="btn btn-outline-primary my-2 my-sm-0"
-               th:href="@{/requests/{id}/products(id = ${request.getId()})}">Add
-                products</a>
-            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Save">
+            <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/requests/{id}/products(id = ${request.getId()})}">Add products</a>
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Save" form="update-form">
         </div>
-    </form>
+
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

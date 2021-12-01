@@ -42,7 +42,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     public List<OrderRequest> getOrders() {
-        return orderRequestRepository.findAllByOrderStatusIsNot(OrderStatus.CREATED.getInternalName());
+        return orderRequestRepository.findAllByOrderStatusNotIn(Arrays.asList(OrderStatus.CREATED.getInternalName(), OrderStatus.DECLINED.getInternalName()));
     }
 
     @Override
@@ -139,6 +139,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         }
         persistedRequest.setCustomerName(request.getCustomerName());
         persistedRequest.setCustomerAddress(request.getCustomerAddress());
+        persistedRequest.setDueDate(request.getDueDate());
         return orderRequestRepository.save(persistedRequest);
     }
 
@@ -176,5 +177,10 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             throw new RuntimeException("No bill for order " + id + " has been issued");
         }
         return persistedRequest.getBill();
+    }
+
+    @Override
+    public void delete(long id) {
+        orderRequestRepository.deleteById(id);
     }
 }

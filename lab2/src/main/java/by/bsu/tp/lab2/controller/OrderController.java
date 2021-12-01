@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -49,6 +50,7 @@ public class OrderController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("order", orderRequestService.getById(id));
+        model.addAttribute("minDate", LocalDate.now().plusDays(1).toString());
         authenticationUtil.injectUser(model);
         return "order/edit";
     }

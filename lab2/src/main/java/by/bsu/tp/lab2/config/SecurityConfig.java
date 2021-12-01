@@ -23,8 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
         http
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/products").hasAnyAuthority("products.view", "products.edit")
                 .antMatchers("/products/**").hasAuthority("products.edit")
@@ -34,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/orders/**").hasAuthority("orders.edit")
                 .antMatchers("/", "/home").hasAnyAuthority("employee", "user")
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/h2-console", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @Controller
 @RequestMapping("/requests")
@@ -41,6 +43,7 @@ public class OrderRequestController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("request", orderRequestService.getById(id));
+        model.addAttribute("minDate", LocalDate.now().plusDays(1).toString());
         authenticationUtil.injectUser(model);
         return "request/edit";
     }
@@ -94,6 +97,12 @@ public class OrderRequestController {
             @ModelAttribute("redirect") String redirect) {
         orderRequestService.updateStatus(id, status);
         return "redirect:" + redirect;
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") long id) {
+        orderRequestService.delete(id);
+        return "redirect:";
     }
 
 }

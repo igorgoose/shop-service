@@ -48,18 +48,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void createProduct(Product product, String... seasons) {
-        product.setProductSeasons(convertToProductSeasons(seasons));
+    public void createProduct(Product product) {
         productRepository.save(product);
     }
 
     @Transactional
     @Override
-    public void updateProduct(long id, Product product, String... seasons) {
+    public void updateProduct(long id, Product product) {
         Product persistedProduct = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product(id=" + id + ") not found"));
         persistedProduct.setName(product.getName());
         persistedProduct.setPrice(product.getPrice());
-        persistedProduct.setProductSeasons(convertToProductSeasons(seasons));
+        persistedProduct.setProductSeasons(product.getProductSeasons());
+        persistedProduct.setQuantity(product.getQuantity());
         productRepository.save(persistedProduct);
     }
 

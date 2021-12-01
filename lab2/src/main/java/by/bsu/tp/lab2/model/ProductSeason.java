@@ -15,8 +15,4 @@ public class ProductSeason {
     @Column(unique = true)
     private String name;
 
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "productSeasons")
-    private List<Product> products;
-
 }

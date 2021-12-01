@@ -11,7 +11,8 @@ public enum OrderStatus {
     CREATED("created", "Created"),
     PREPARING("preparing", "Preparing"),
     SENT_TO_CUSTOMER("sent-to-customer", "Sent to customer"),
-    DECLINED("declined", "Declined");
+    DECLINED("declined", "Declined"),
+    DECLINED_ORDER("order declined", "Declined");
 
     private final String internalName;
     private final String value;

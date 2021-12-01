@@ -10,7 +10,7 @@
 <body>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" th:href="@{/home}">TP_LAB2</a>
+        <a class="navbar-brand" th:href="@{/home}">DS_LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -41,7 +41,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a th:if="${user.getRole().equals('CLERK')}"
+                        <a th:if="${user.getRole().equals('CLERK') || user.getRole().equals('ADMIN')}"
                                 class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
                 </li>

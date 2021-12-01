@@ -18,4 +18,6 @@ public interface OrderRequestService {
     OrderRequest updateStatus(long id, String status);
     OrderRequest issueBill(long id) throws IOException;
     byte[] getBillByOrderId(long id);
+
+    void delete(long id);
 }

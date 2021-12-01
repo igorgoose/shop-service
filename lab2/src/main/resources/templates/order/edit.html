@@ -10,7 +10,7 @@
 <body>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" th:href="@{/home}">TP_LAB2</a>
+        <a class="navbar-brand" th:href="@{/home}">DS_LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -70,6 +70,12 @@
         <label for="address" class="col-sm-2 col-form-label" th:text="${'Customer''s address: '}"></label>
         <div class="col-sm-10">
             <input id="address" readonly class="form-control-plaintext" type="text" th:value="${order.getCustomerAddress()}"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="date" class="col-sm-2 col-form-label" th:text="${'Due date: '}"></label>
+        <div class="col-sm-10">
+            <input type="date" id="date" th:value="${order.getDueDate()}" readonly>
         </div>
     </div>
     <div class="form-group row">

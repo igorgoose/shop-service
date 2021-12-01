@@ -10,7 +10,7 @@
 <body>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" th:href="@{/home}">TP_LAB2</a>
+        <a class="navbar-brand" th:href="@{/home}">DS_LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -42,6 +42,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="@{/requests}">All</a>
+                        <a th:if="${user.getRole().equals('CLERK') || user.getRole().equals('ADMIN')}"
+                           class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
                 </li>
             </ul>
@@ -63,7 +65,8 @@
             <th>Status</th>
             <th>Total Price</th>
             <th th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}"></th>
-            <th th:if="${user.getRole().equals('SALESMAN')}"></th>
+            <th th:if="${user.getRole().equals('ADMIN')}"></th>
+            <th th:if="${user.getRole().equals('ADMIN')}"></th>
         </tr>
         </thead>
         <tbody>
@@ -75,8 +78,13 @@
             <td th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('SALESMAN')}">
                 <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/orders/{id}(id = ${order.getId()})}">View</a>
             </td>
-            <td th:if="${user.getRole().equals('SALESMAN') && order.getOrderStatus().equals('preparing')}">
+            <td th:if="${user.getRole().equals('ADMIN') && order.getOrderStatus().equals('preparing')}">
                 <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/orders/{id}/edit(id = ${order.getId()})}">Edit</a>
+            </td>
+            <td th:if="${user.getRole().equals('ADMIN')}">
+                <form class="form-inline my-2 my-lg-0" th:method="delete" th:action="@{/requests/{id}(id = ${order.getId()})}">
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Delete</button>
+                </form>
             </td>
         </tr>
         </tbody>

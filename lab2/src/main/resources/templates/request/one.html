@@ -10,7 +10,7 @@
 <body>
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" th:href="@{/home}">TP_LAB2</a>
+        <a class="navbar-brand" th:href="@{/home}">DS_LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -43,26 +43,31 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}"
                            class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a th:if="${user.getRole().equals('CLERK')}"
+                        <a th:if="${user.getRole().equals('ADMIN')}"
                            class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
                 </li>
-                <li th:if="${user.getRole().equals('CLERK') && request.getOrderStatus().equals('created')}" class="nav-item ">
+                <li th:if="${user.getRole().equals('ADMIN') && request.getOrderStatus().equals('created')}" class="nav-item ">
                     <a class="btn btn-outline-primary my-2 my-sm-0"
                        th:href="@{/requests/{id}/edit(id = ${request.getId()})}">Edit</a>
                 </li>
-                <li th:if="${user.getRole().equals('CLERK') && request.getOrderStatus().equals('created')}" class="nav-item ">
+                <li th:if="${user.getRole().equals('ADMIN') && request.getOrderStatus().equals('created')}" class="nav-item ">
                     <form th:method="patch" th:action="@{/requests/{id}/status(id = ${request.getId()})}">
                         <input type="hidden" name="redirect" th:value="${'/requests'}">
                         <input type="hidden" name="status" value="preparing">
                         <button type="submit" class="btn btn-outline-success ml-2 my-2 my-sm-0">Send to store</button>
                     </form>
                 </li>
-                <li th:if="${user.getRole().equals('CLERK') && request.getOrderStatus().equals('created')}" class="nav-item ">
+                <li th:if="${user.getRole().equals('ADMIN') && request.getOrderStatus().equals('created')}" class="nav-item ">
                     <form th:method="patch" th:action="@{/requests/{id}/status(id = ${request.getId()})}">
                         <input type="hidden" name="redirect" th:value="${'/requests'}">
                         <input type="hidden" name="status" value="declined">
                         <button type="submit" class="btn btn-outline-danger ml-2 my-2 my-sm-0">Decline</button>
+                    </form>
+                </li>
+                <li th:if="${user.getRole().equals('ADMIN')}" class="nav-item ">
+                    <form class="form-inline my-2 my-lg-0" th:method="delete" th:action="@{/requests/{id}(id = ${request.getId()})}">
+                        <button class="btn btn-outline-danger ml-2 my-2 my-sm-0" type="submit">Delete</button>
                     </form>
                 </li>
             </ul>
@@ -100,6 +105,12 @@
         <label for="address" class="col-sm-2 col-form-label" th:text="${'Customer''s address: '}"></label>
         <div class="col-sm-10">
             <input id="address" readonly class="form-control-plaintext" type="text" th:value="${request.getCustomerAddress()}"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="date" class="col-sm-2 col-form-label" th:text="${'Due date: '}"></label>
+        <div class="col-sm-10">
+            <input type="date" id="date" th:value="${request.getDueDate()}" readonly>
         </div>
     </div>
     <div class="form-group row">

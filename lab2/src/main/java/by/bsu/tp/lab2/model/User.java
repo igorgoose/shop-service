@@ -20,6 +20,4 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     private List<OrderRequest> orderRequests;
-    @OneToMany(mappedBy = "user")
-    private List<BasketPosition> basketPositions;
 }

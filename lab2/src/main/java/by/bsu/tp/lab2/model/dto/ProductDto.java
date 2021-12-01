@@ -18,6 +18,10 @@ public enum ProductDto {
         double getPrice();
     }
 
+    private interface Description {
+        String getDescription();
+    }
+
     private interface SeasonsString {
         String getSeasonsString();
     }
@@ -26,16 +30,18 @@ public enum ProductDto {
         ;
 
         @Data
-        public static class Short implements Id, Name, Price, SeasonsString {
+        public static class Short implements Id, Name, Price, SeasonsString, Description {
             private final Long id;
             private final String name;
             private final double price;
+            private final String description;
             private final String seasonsString;
 
             public Short(Product product) {
                 this.id = product.getId();
                 this.name = product.getName();
                 this.price = product.getPrice();
+                this.description = product.getDescription();
                 this.seasonsString = product.getSeasonsString();
             }
         }

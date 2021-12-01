@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Requests</title>
+    <title>Edit Product</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <div>
@@ -19,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
-                    <a class="nav-link" th:href="@{/home}">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/home}">Home<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -35,17 +34,20 @@
                     class="nav-item">
                     <a class="nav-link" th:href="@{/orders}">Orders</a>
                 </li>
-                <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Requests
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Requests
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a th:if="${user.getRole().equals('ADMIN') || user.getRole().equals('CLERK')}"
                            class="dropdown-item" th:href="@{/requests}">All</a>
-                        <a th:if="${user.getRole().equals('CLERK') || user.getRole().equals('ADMIN')}"
+                        <a th:if="${user.getRole().equals('ADMIN')}"
                            class="dropdown-item" th:href="@{/requests/new}">Create</a>
                     </div>
+                </li>
+                <li th:if="${user.getRole().equals('ADMIN')}"
+                    class="nav-item ">
+                    <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/products/{id}/edit(id = ${product.getId()})}">Edit</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" th:method="post" th:action="@{/logout}">
@@ -56,41 +58,41 @@
     </nav>
 </div>
 <div class="container-fluid">
-    <h1>Order Requests</h1>
-    <label th:if="${requests.isEmpty()}">There are no requests at the moment</label>
-    <table th:if="${!requests.isEmpty()}" class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Author</th>
-            <th>Status</th>
-            <th>Total Price</th>
-            <th></th>
-            <th th:if="${user.getRole().equals('ADMIN')}"></th>
-            <th th:if="${user.getRole().equals('ADMIN')}"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="request : ${requests}">
-            <td th:text="${request.getId()}"></td>
-            <td th:text="${request.getAuthor().getFirstName() + ' ' + request.getAuthor().getLastName()}"></td>
-            <td th:text="${request.getOrderStatus()}"></td>
-            <td th:text="${request.getTotalPrice()}"></td>
-            <td>
-                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/requests/{id}(id = ${request.getId()})}">View</a>
-            </td>
-            <td th:if="${user.getRole().equals('ADMIN') && request.getOrderStatus().equals('created')}">
-                <a class="btn btn-outline-primary my-2 my-sm-0" th:href="@{/requests/{id}/edit(id = ${request.getId()})}">Edit</a>
-            </td>
-            <td th:if="${user.getRole().equals('ADMIN')}">
-                <form class="form-inline my-2 my-lg-0" th:method="delete" th:action="@{/requests/{id}(id = ${request.getId()})}">
-                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <hr/>
+    <div class="form-group">
+        <label for="name">Product Name</label>
+        <div class="col-sm-10">
+            <input readonly type="text" class="form-control" id="name" pattern="^[ a-zA-z]*$" required
+                   placeholder="Enter product name" th:value="${product.getName()}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="price">Price</label>
+        <div class="col-sm-10">
+            <input readonly type="text" class="form-control" id="price" placeholder="Enter price" pattern="^\d*\.?\d+$"
+                   required th:value="${product.getPrice()}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <div class="col-sm-10">
+            <input readonly type="text" class="form-control" id="quantity" placeholder="Enter quantity" pattern="^\d+$"
+                   required th:value="${product.getQuantity()}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Seasons</label>
+        <th:block th:each="season : ${seasons}">
+            <div class="form-check">
+                <input onclick="return false;" class="form-check-input" type="checkbox" th:name="${season.getId()}" th:value="${season.getId()}" th:id="${season.getId()}"
+                       th:checked="${product.getProductSeasons().contains(season)}">
+                <label class="form-check-label" th:for="${season.getId()}" th:text="${season.getName()}"></label>
+            </div>
+        </th:block>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly th:text="${product.getDescription()}"></textarea>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

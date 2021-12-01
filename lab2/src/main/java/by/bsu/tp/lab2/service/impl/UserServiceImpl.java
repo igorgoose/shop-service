@@ -25,9 +25,9 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        initUsers();
     }
 
+    @PostConstruct
     private void initUsers() {
         User admin = new User();
         admin.setId(1L);
